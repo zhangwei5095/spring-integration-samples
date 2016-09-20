@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2010 the original author or authors.
+ * Copyright 2002-2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.springframework.integration.samples.tcpclientserver;
 
+import org.springframework.integration.MessageTimeoutException;
+
 /**
  * Simple service that receives data in a byte array,
  * converts it to a String and appends it with ':echo'.
@@ -25,11 +27,24 @@ package org.springframework.integration.samples.tcpclientserver;
  */
 public class EchoService {
 
-	public String test(String input) {
+	public String test(String input) throws InterruptedException {
 		if ("FAIL".equals(input)) {
 			throw new RuntimeException("Failure Demonstration");
 		}
+		else if(input.startsWith("TIMEOUT_TEST")) {
+			Thread.sleep(3000);
+		}
+
 		return input + ":echo";
+	}
+
+	public MessageTimeoutException noResponse(String input) {
+		if ("TIMEOUT_TEST_THROW".equals(input)) {
+			throw new MessageTimeoutException("No response received for " + input);
+		}
+		else {
+			return new MessageTimeoutException("No response received for " + input);
+		}
 	}
 
 }

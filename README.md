@@ -26,9 +26,14 @@ Inside of each category you'll find a **README.md** file, which will contain a m
 * [Spring Integration][]
 * [Spring Integration Extensions][]
 * [Spring Integration Templates][]
+* [Spring Integration Java Dsl][]
 * [Spring Integration Dsl Groovy][]
 * [Spring Integration Dsl Scala][]
 * [Spring Integration Pattern Catalog][]
+
+## Community Sample Projects
+
+* [Xavier Padró][]
 
 # Categories
 
@@ -43,6 +48,7 @@ This directory holds demos/samples for Spring Integration 4.0 Java Configuration
 This is a good place to get started. The samples here are technically motivated and demonstrate the bare minimum with regard to configuration and code to help you to get introduced to the basic concepts, API and configuration of Spring Integration. For example, if you are looking for an answer on how to wire a **Service Activator**  to a **Channel** or how to apply a **Gateway** to your message exchange or how to get started with using the **MAIL** or **XML** module, this would be the right place to find a relevant sample. The bottom line is that this is a good starting point.
 
 * **amqp** - Demonstrates the functionality of the various **AMQP Adapters**
+* **barrier** - Shows how to suspend a thread until some asynchronous event occurs
 * **control-bus** - Demonstrates the functionality of the **Control Bus**
 * **enricher** - This sample demonstrates how the Enricher components can be used
 * **feed** - Demonstrates the functionality of the **Feed Adapter** (RSS/ATOM)
@@ -55,6 +61,7 @@ This is a good place to get started. The samples here are technically motivated 
 * **jmx** - Demonstrates **JMX** support using a **JMX Attribute Polling Channel** and **JMX Operation Invoking Channel Adapter**
 * **jpa** - Shows the usage of the JPA Components can be used
 * **mail** - Example showing **IMAP** and **POP3** support
+* **mqtt** - Demonstrates the functionality of inbound and outbound **MQTT Adapters**
 * **mongodb** - Shows how to persist a Message payload to a **MongoDb** document store and how to read documents from **MongoDb**
 * **oddeven** - Example combining the functionality of **Inbound Channel Adapter**, **Filter**, **Router** and **Poller**
 * **jpa** - This sample illustrates how the JPA Components can be used
@@ -106,20 +113,27 @@ This category targets developers and architects who have a good understanding of
 * **cafe** - Emulates a simple operation of a coffee shop combining various Spring Integration adapters (Including **Router** and **Splitter**) see [Appendix A of the reference documentation](http://static.springsource.org/spring-integration/docs/latest-ga/reference/html/samples.html) for more details. Implementations are provided for:
   - AMQP
   - JMS
-  - In memory channels 
+  - In memory channels
 * **cafe-scripted** - Scripted implementation of the classic **cafe** sample application. Supports **JavaScript**, **Groovy**, **Ruby**, and **Python**.
-* **loan-broker** - Simulates a simple banking application (Uses **Gateway**, **Chain**, **Header Enricher**, **Recipient List Router**, **Aggregator**) see [Appendix A of the reference documentation](http://static.springsource.org/spring-integration/docs/latest-ga/reference/html/samples.html) for more details
+* **loan-broker** - Simulates a simple banking application (Uses **Gateway**, **Chain**, **Header Enricher**, **Recipient List Router**, **Aggregator**) see [Appendix A of the reference documentation](http://docs.spring.io/spring-integration/reference/html/samples.html) for more details
 * **loanshark** This extension to the loan broker sample shows how to exchange messages between Spring Integration applications (and other technologies) using **UDP**.
+
+#Contributing
+
+See the [Spring Integration Contributor Guidelines](https://github.com/spring-projects/spring-integration/blob/master/CONTRIBUTING.adoc) for information about how to contribute to this repository.
 
 #Resources
 
-For more information, please visit the Spring Integration website at: [http://www.springsource.org/spring-integration](http://www.springsource.org/spring-integration)
+For more information, please visit the Spring Integration website at: [http://projects.spring.io/spring-integration/](http://projects.spring.io/spring-integration/)
 
-[Spring Integration]: https://github.com/SpringSource/spring-integration
-[Spring Integration Extensions]: https://github.com/SpringSource/spring-integration-extensions
-[Spring Integration Templates]: https://github.com/SpringSource/spring-integration-templates/tree/master/si-sts-templates
-[Spring Integration Dsl Groovy]: https://github.com/SpringSource/spring-integration-dsl-groovy
-[Spring Integration Dsl Scala]: https://github.com/SpringSource/spring-integration-dsl-scala
-[Spring Integration Pattern Catalog]: https://github.com/SpringSource/spring-integration-pattern-catalog
+[Spring Integration]: https://github.com/spring-projects/spring-integration
+[Spring Integration Extensions]: https://github.com/spring-projects/spring-integration-extensions
+[Spring Integration Templates]: https://github.com/spring-projects/spring-integration-templates/tree/master/si-sts-templates
+[Spring Integration Java Dsl]: https://github.com/spring-projects/spring-integration-java-dsl
+[Spring Integration Dsl Groovy]: https://github.com/spring-projects/spring-integration-dsl-groovy
+[Spring Integration Dsl Scala]: https://github.com/spring-projects/spring-integration-dsl-scala
+[Spring Integration Pattern Catalog]: https://github.com/spring-projects/spring-integration-pattern-catalog
 
 [message store reaper]: http://static.springsource.org/spring-integration/api/org/springframework/integration/store/MessageGroupStoreReaper.html
+
+[Xavier Padró]: https://github.com/xpadro/spring-integration

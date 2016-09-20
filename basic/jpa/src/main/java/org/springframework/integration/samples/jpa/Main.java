@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.integration.samples.jpa;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 
-import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.integration.samples.jpa.domain.Person;
 import org.springframework.integration.samples.jpa.service.PersonService;
 import org.springframework.util.StringUtils;
 
@@ -28,17 +34,16 @@ import org.springframework.util.StringUtils;
  *
  * @author Gunnar Hillert
  * @author Amol Nayak
+ * @author Gary Russell
+ * @author Artem Bilan
  * @version 1.0
  *
  */
-public final class Main {
+@SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
+@ImportResource("spring-integration-context.xml")
+public class Main {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
-
-	/**
-	 * Prevent instantiation.
-	 */
-	private Main() {}
 
 	/**
 	 * Load the Spring Integration Application Context
@@ -66,19 +71,19 @@ public final class Main {
 		System.out.println("\tq. Quit the application");
 		System.out.print("Enter you choice: ");
 
-		final GenericXmlApplicationContext context = new GenericXmlApplicationContext();
+		SpringApplicationBuilder springApplicationBuilder = new SpringApplicationBuilder(Main.class).web(false);
 
 		while (true) {
 			final String input = scanner.nextLine();
 
 			if("1".equals(input.trim())) {
-				context.getEnvironment().setActiveProfiles("hibernate");
+				springApplicationBuilder.sources(HibernateJpaAutoConfiguration.class);
 				break;
 			} else if("2".equals(input.trim())) {
-				context.getEnvironment().setActiveProfiles("openjpa");
+				springApplicationBuilder.profiles("openJpa");
 				break;
 			} else if("3".equals(input.trim())) {
-				context.getEnvironment().setActiveProfiles("eclipselink");
+				springApplicationBuilder.profiles("eclipseLink");
 				break;
 			} else if("q".equals(input.trim())) {
 				System.out.println("Exiting application...bye.");
@@ -89,9 +94,7 @@ public final class Main {
 			}
 		}
 
-		context.load("classpath:META-INF/spring/integration/*-context.xml");
-		context.registerShutdownHook();
-		context.refresh();
+		ConfigurableApplicationContext context = springApplicationBuilder.run(args);
 
 		final PersonService personService = context.getBean(PersonService.class);
 
@@ -104,13 +107,16 @@ public final class Main {
 		while (true) {
 			final String input = scanner.nextLine();
 
-			if("1".equals(input.trim())) {
+			if ("1".equals(input.trim())) {
 				findPeople(personService);
-			} else if("2".equals(input.trim())) {
-				createPersonDetails(scanner,personService);
-			} else if("q".equals(input.trim())) {
+			}
+			else if ("2".equals(input.trim())) {
+				createPersonDetails(scanner, personService);
+			}
+			else if ("q".equals(input.trim())) {
 				break;
-			} else {
+			}
+			else {
 				System.out.println("Invalid choice\n\n");
 			}
 
@@ -122,6 +128,7 @@ public final class Main {
 		}
 
 		System.out.println("Exiting application...bye.");
+		context.close();
 		System.exit(0);
 
 	}
@@ -155,10 +162,7 @@ public final class Main {
 			}
 		}
 	}
-	/**
-	 * @param service
-	 * @param input
-	 */
+
 	private static void findPeople(final PersonService service) {
 
 			System.out.println("ID            NAME         CREATED");
@@ -169,7 +173,7 @@ public final class Main {
 			if(people != null && !people.isEmpty()) {
 				for(Person person : people) {
 					System.out.print(String.format("%d, %s, ", person.getId(), person.getName()));
-					System.out.println(DATE_FORMAT.format(person.getCreatedDateTime()));
+					System.out.println(DATE_FORMAT.format(person.getCreatedDateTime()));//NOSONAR
 				}
 			} else {
 				System.out.println(
@@ -177,6 +181,6 @@ public final class Main {
 			}
 
 			System.out.println("==================================\n\n");
-
 	}
+
 }

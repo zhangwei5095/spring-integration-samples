@@ -14,7 +14,7 @@ The sample consists of two parts:
 
 #### Command Line Using Gradle
 
-The easiest way to run the **server** is to use the [Gralde Jetty Plugin](http://www.gradle.org/docs/current/userguide/jetty_plugin.html).
+The easiest way to run the **server** is to use the [Gradle Jetty Plugin](http://www.gradle.org/docs/current/userguide/jetty_plugin.html).
  Simply execute:
 
     $ gradlew :http:jettyRun
@@ -48,5 +48,5 @@ In STS (Eclipse), go to package **org.springframework.integration.samples.http**
   
 The gateway (**client**) initiates a simple request posting "Hello" to the **server** and the **server** responds by appending **from the other side** to the message payload and returns. You should see the following output from the server:
    
-    INFO : org.springframework.integration.samples.http.HttpClientDemo - Replied with: Hello from the other side
+    ++++++++++++ Replied with: Hello from the other side ++++++++++++
 

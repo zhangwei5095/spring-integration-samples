@@ -27,9 +27,6 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import reactor.core.composable.Promise;
-import reactor.spring.context.config.EnableReactor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -48,6 +45,8 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import reactor.rx.Promise;
 
 /**
  * @author Oleg Zhurakousky
@@ -88,8 +87,7 @@ public class PromiseTest {
 						failures.incrementAndGet();
 						logger.error("Unexpected exception for " + number, t);
 						latch.countDown();
-					})
-					.flush();
+					}).poll();
 		}
 		assertTrue(latch.await(60, TimeUnit.SECONDS));
 		assertEquals(0, failures.get());
@@ -98,15 +96,9 @@ public class PromiseTest {
 
 	@Configuration
 	@EnableIntegration
-	@EnableReactor
 	@ComponentScan
 	@IntegrationComponentScan
 	public static class TestConfig {
-
-		@Bean
-		public MessageChannel gatewayChannel() {
-			return new DirectChannel();
-		}
 
 		@Bean
 		@ServiceActivator(inputChannel = "mathServiceChannel")
@@ -114,16 +106,9 @@ public class PromiseTest {
 			return new MathService();
 		}
 
-		@Bean
-		public AsyncTaskExecutor exec() {
-			SimpleAsyncTaskExecutor simpleAsyncTaskExecutor = new SimpleAsyncTaskExecutor();
-			simpleAsyncTaskExecutor.setThreadNamePrefix("exec-");
-			return simpleAsyncTaskExecutor;
-		}
-
 	}
 
-	@MessagingGateway(defaultReplyTimeout = 0, reactorEnvironment = "reactorEnv")
+	@MessagingGateway(defaultReplyTimeout = "0", reactorEnvironment = "reactorEnv")
 	public interface MathGateway {
 
 		@Gateway(requestChannel = "gatewayChannel")
